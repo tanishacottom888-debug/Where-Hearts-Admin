@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Admin Panel | Where Hearts Meet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0F1A24;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            padding: 20px 16px 50px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #C6A43F;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .sub {
+            color: #F9F6F0;
+            margin-bottom: 32px;
+            font-size: 14px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: #1A2E3A;
+            color: #F9F6F0;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: #6B2D3E;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .admin-card {
+            background: #F9F6F0;
+            border-radius: 28px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .admin-card h2 {
+            color: #0F1A24;
+            margin-bottom: 20px;
+            font-size: 22px;
+            border-left: 4px solid #C6A43F;
+            padding-left: 12px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #E8E0D5;
+            border-radius: 40px;
+            font-size: 14px;
+            background: white;
+            font-family: inherit;
+        }
+
+        textarea {
+            border-radius: 20px;
+            resize: vertical;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #C6A43F;
+        }
+
+        .add-btn {
+            background: #6B2D3E;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 16px;
+            font-size: 15px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 20px;
+            min-width: 800px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #E8E0D5;
+        }
+
+        th {
+            background: #0F1A24;
+            color: #C6A43F;
+            position: sticky;
+            top: 0;
+        }
+
+        .user-photo {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .photos-gallery {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .photos-gallery img {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .edit-btn, .delete-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-right: 6px;
+            font-size: 12px;
+        }
+
+        .edit-btn {
+            background: #C6A43F;
+            color: #0F1A24;
+        }
+
+        .delete-btn {
+            background: #6B2D3E;
+            color: white;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #C6A43F20;
+            color: #C6A43F;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 700px) {
+            th, td {
+                font-size: 12px;
+                padding: 8px;
+            }
+            .tab-btn {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🛡️ Where Hearts Meet — Admin</h1>
+    <div class="sub">Manage user registrations & member profiles</div>
+
+    <div class="tab-buttons">
+        <button class="tab-btn active" onclick="switchTab('registrations')">📋 User Registrations</button>
+        <button class="tab-btn" onclick="switchTab('members')">💑 Member Profiles (Gallery)</button>
+    </div>
+
+    <!-- Tab 1: User Registrations -->
+    <div id="registrationsTab" class="tab-content active">
+        <div class="admin-card">
+            <h2>📝 People Who Registered (Homepage Form)</h2>
+            <div class="table-wrapper">
+                <div id="registrationsTable"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab 2: Member Profiles -->
+    <div id="membersTab" class="tab-content">
+        <div class="admin-card">
+            <h2>➕ Add New Member (Appears in Gallery)</h2>
+            <div class="form-grid">
+                <input type="text" id="memberName" placeholder="Full name *">
+                <input type="number" id="memberAge" placeholder="Age *">
+                <input type="text" id="memberCity" placeholder="City *">
+                <input type="text" id="memberCountry" placeholder="Country *">
+                <input type="text" id="memberNationality" placeholder="Nationality *">
+                <select id="memberGender">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+                <select id="memberInterestedIn">
+                    <option value="Women">Interested in Women</option>
+                    <option value="Men">Interested in Men</option>
+                    <option value="Everyone">Everyone</option>
+                </select>
+                <input type="text" id="memberPhoto" placeholder="Photo URL (direct image link)">
+                <input type="text" id="memberWhatsapp" placeholder="WhatsApp number *">
+            </div>
+            <div class="form-grid" style="margin-top: 12px;">
+                <textarea id="memberBio" rows="2" placeholder="Bio / About them (short description)"></textarea>
+                <textarea id="memberLookingFor" rows="2" placeholder="What they are looking for"></textarea>
+            </div>
+            <button class="add-btn" onclick="addMember()">➕ Add Member to Gallery</button>
+        </div>
+
+        <div class="admin-card">
+            <h2>📋 All Members (Displayed on Gallery Page)</h2>
+            <div class="table-wrapper">
+                <div id="membersTable"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ============================================
+    // 🔐 LOGIN CREDENTIALS
+    // Username: Admin
+    // Password: HeartAgency2025
+    // ============================================
+    const ADMIN_USERNAME = "Admin";
+    const ADMIN_PASSWORD = "HeartAgency2025";
+    
+    const enteredUsername = prompt("🔐 Admin Login\n\nUsername:");
+    const enteredPassword = prompt("🔐 Admin Login\n\nPassword:");
+    
+    if (enteredUsername !== ADMIN_USERNAME || enteredPassword !== ADMIN_PASSWORD) {
+        document.body.innerHTML = `
+            <div style="display: flex; align-items: center; justify-content: center; height: 100vh; background: #0F1A24; color: white; font-family: monospace; text-align: center; padding: 20px;">
+                <div>
+                    <h1>🔒 Access Denied</h1>
+                    <p>Invalid username or password.</p>
+                    <p style="margin-top: 20px; font-size: 14px; color: #C6A43F;">Where Hearts Meet Agency</p>
+                </div>
+            </div>
+        `;
+        throw new Error("Unauthorized access");
+    }
+
+    let members = [];
+    let registrations = [];
+
+    function loadData() {
+        // Load members (gallery)
+        const storedMembers = localStorage.getItem('whm_members');
+        if (storedMembers) {
+            members = JSON.parse(storedMembers);
+        } else {
+            members = [
+                {
+                    id: 1,
+                    name: "James Mwangi",
+                    age: 34,
+                    city: "Nairobi",
+                    country: "Kenya",
+                    nationality: "Kenyan",
+                    gender: "Male",
+                    interestedIn: "Women",
+                    bio: "Architect who loves hiking and deep conversations. I believe in kindness and honesty above all.",
+                    lookingFor: "A woman with a kind heart who values family and loves adventure.",
+                    photo: "https://randomuser.me/api/portraits/men/32.jpg",
+                    whatsapp: "+254712345678"
+                },
+                {
+                    id: 2,
+                    name: "Aisha Wanjiku",
+                    age: 29,
+                    city: "Kampala",
+                    country: "Uganda",
+                    nationality: "Ugandan",
+                    gender: "Female",
+                    interestedIn: "Men",
+                    bio: "Doctor who loves traveling and trying new foods. I'm caring and adventurous.",
+                    lookingFor: "A serious, God-fearing man who wants a family.",
+                    photo: "https://randomuser.me/api/portraits/women/68.jpg",
+                    whatsapp: "+256712345678"
+                }
+            ];
+            saveMembers();
+        }
+
+        // Load user registrations
+        const storedRegistrations = localStorage.getItem('whm_registrations');
+        if (storedRegistrations) {
+            registrations = JSON.parse(storedRegistrations);
+        } else {
+            registrations = [];
+        }
+
+        renderRegistrations();
+        renderMembersTable();
+    }
+
+    function saveMembers() {
+        localStorage.setItem('whm_members', JSON.stringify(members));
+    }
+
+    function renderRegistrations() {
+        const container = document.getElementById('registrationsTable');
+        if (registrations.length === 0) {
+            container.innerHTML = "<p style='padding:20px;text-align:center;'>No registrations yet. People will appear here when they fill the homepage form.</p>";
+            return;
+        }
+
+        let html = `<table>
+            <thead>
+                <tr>
+                    <th>Photos</th><th>Name</th><th>Gender</th><th>Age</th><th>Nationality</th><th>Country</th><th>Looking For</th><th>WhatsApp</th><th>Registered</th>
+                </tr>
+            </thead>
+            <tbody>`;
+        registrations.forEach(r => {
+            let photosHtml = '';
+            if (r.photos && r.photos.length > 0) {
+                photosHtml = '<div class="photos-gallery">';
+                r.photos.slice(0, 3).forEach(p => {
+                    photosHtml += `<img src="${p}" onerror="this.src='https://via.placeholder.com/40'">`;
+                });
+                photosHtml += '</div>';
+            } else {
+                photosHtml = '📷 No photo';
+            }
+            
+            html += `
+                <tr>
+                    <td>${photosHtml}</td>
+                    <td>${r.fullName || 'N/A'}</td>
+                    <td>${r.gender || 'N/A'}</td>
+                    <td>${r.age || 'N/A'}</td>
+                    <td>${r.nationality || 'N/A'}</td>
+                    <td>${r.currentCountry || 'N/A'}</td>
+                    <td>${(r.lookingFor || '').substring(0, 50)}${(r.lookingFor || '').length > 50 ? '...' : ''}</td>
+                    <td>${r.whatsapp || 'N/A'}</td>
+                    <td>${new Date(r.timestamp).toLocaleString()}</td>
+                </tr>
+            `;
+        });
+        html += `</tbody>${"<"}/table>`;
+        container.innerHTML = html;
+    }
+
+    function renderMembersTable() {
+        const container = document.getElementById('membersTable');
+        if (members.length === 0) {
+            container.innerHTML = "<p style='padding:20px;text-align:center;'>No members. Add one above.</p>";
+            return;
+        }
+
+        let html = `<table>
+            <thead>
+                <tr>
+                    <th>Photo</th><th>Name</th><th>Age</th><th>City</th><th>Country</th><th>Nationality</th><th>Gender</th><th>Interested In</th><th>Bio</th><th>Looking For</th><th>WhatsApp</th><th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>`;
+        members.forEach(m => {
+            html += `
+                <tr>
+                    <td><img class="user-photo" src="${m.photo}" onerror="this.src='https://via.placeholder.com/45'"></td>
+                    <td>${m.name}</td>
+                    <td>${m.age}</td>
+                    <td>${m.city || '-'}</td>
+                    <td>${m.country}</td>
+                    <td>${m.nationality || '-'}</td>
+                    <td>${m.gender}</td>
+                    <td>${m.interestedIn}</td>
+                    <td>${(m.bio || '').substring(0, 40)}${(m.bio || '').length > 40 ? '...' : ''}</td>
+                    <td>${(m.lookingFor || '').substring(0, 40)}${(m.lookingFor || '').length > 40 ? '...' : ''}</td>
+                    <td>${m.whatsapp}</td>
+                    <td>
+                        <button class="edit-btn" onclick="editMember(${m.id})">✏️ Edit</button>
+                        <button class="delete-btn" onclick="deleteMember(${m.id})">🗑️ Del</button>
+                    </td>
+                </tr>
+            `;
+        });
+        html += `</tbody>${"<"}/table>`;
+        container.innerHTML = html;
+    }
+
+    function addMember() {
+        const newMember = {
+            id: Date.now(),
+            name: document.getElementById('memberName').value,
+            age: parseInt(document.getElementById('memberAge').value),
+            city: document.getElementById('memberCity').value,
+            country: document.getElementById('memberCountry').value,
+            nationality: document.getElementById('memberNationality').value,
+            gender: document.getElementById('memberGender').value,
+            interestedIn: document.getElementById('memberInterestedIn').value,
+            bio: document.getElementById('memberBio').value,
+            lookingFor: document.getElementById('memberLookingFor').value,
+            photo: document.getElementById('memberPhoto').value,
+            whatsapp: document.getElementById('memberWhatsapp').value
+        };
+        
+        if (!newMember.name || !newMember.age || !newMember.country || !newMember.whatsapp) {
+            alert("Please fill required fields: Name, Age, Country, WhatsApp");
+            return;
+        }
+        
+        members.push(newMember);
+        saveMembers();
+        renderMembersTable();
+        
+        // Clear form
+        document.getElementById('memberName').value = '';
+        document.getElementById('memberAge').value = '';
+        document.getElementById('memberCity').value = '';
+        document.getElementById('memberCountry').value = '';
+        document.getElementById('memberNationality').value = '';
+        document.getElementById('memberBio').value = '';
+        document.getElementById('memberLookingFor').value = '';
+        document.getElementById('memberPhoto').value = '';
+        document.getElementById('memberWhatsapp').value = '';
+        
+        alert('✅ Member added successfully!');
+    }
+
+    function deleteMember(id) {
+        if (confirm("⚠️ Delete this member permanently?")) {
+            members = members.filter(m => m.id !== id);
+            saveMembers();
+            renderMembersTable();
+        }
+    }
+
+    function editMember(id) {
+        const member = members.find(m => m.id === id);
+        if (!member) return;
+        
+        const newName = prompt("Edit full name", member.name);
+        if (newName) member.name = newName;
+        
+        const newAge = prompt("Edit age", member.age);
+        if (newAge) member.age = parseInt(newAge);
+        
+        const newCity = prompt("Edit city", member.city || '');
+        if (newCity !== null) member.city = newCity;
+        
+        const newCountry = prompt("Edit country", member.country);
+        if (newCountry) member.country = newCountry;
+        
+        const newNationality = prompt("Edit nationality", member.nationality || '');
+        if (newNationality !== null) member.nationality = newNationality;
+        
+        const newBio = prompt("Edit bio", member.bio || '');
+        if (newBio !== null) member.bio = newBio;
+        
+        const newLookingFor = prompt("Edit 'looking for'", member.lookingFor || '');
+        if (newLookingFor !== null) member.lookingFor = newLookingFor;
+        
+        const newPhoto = prompt("Edit photo URL", member.photo);
+        if (newPhoto !== null) member.photo = newPhoto;
+        
+        const newWhatsapp = prompt("Edit WhatsApp number", member.whatsapp);
+        if (newWhatsapp) member.whatsapp = newWhatsapp;
+        
+        saveMembers();
+        renderMembersTable();
+        alert('✅ Member updated!');
+    }
+
+    function switchTab(tab) {
+        const registrationsTab = document.getElementById('registrationsTab');
+        const membersTab = document.getElementById('membersTab');
+        const buttons = document.querySelectorAll('.tab-btn');
+
+        if (tab === 'registrations') {
+            registrationsTab.classList.add('active');
+            membersTab.classList.remove('active');
+            buttons[0].classList.add('active');
+            buttons[1].classList.remove('active');
+            renderRegistrations();
+        } else {
+            registrationsTab.classList.remove('active');
+            membersTab.classList.add('active');
+            buttons[0].classList.remove('active');
+            buttons[1].classList.add('active');
+            renderMembersTable();
+        }
+    }
+
+    loadData();
+</script>
+</body>
+</html>
