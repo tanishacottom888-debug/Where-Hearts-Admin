@@ -87,10 +87,6 @@
             gap: 16px;
         }
 
-        .full-width {
-            grid-column: 1 / -1;
-        }
-
         input, select, textarea {
             width: 100%;
             padding: 12px 14px;
@@ -111,6 +107,82 @@
             border-color: #C6A43F;
         }
 
+        /* Photo upload area */
+        .photo-upload-area {
+            border: 2px dashed #C6A43F;
+            background: #FFF8F0;
+            border-radius: 24px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+
+        .photo-upload-area:hover {
+            background: #FFF0E8;
+            border-color: #6B2D3E;
+        }
+
+        .photo-upload-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .photo-upload-text {
+            font-size: 12px;
+            color: #6B5E5E;
+        }
+
+        .photo-upload-subtext {
+            font-size: 10px;
+            color: #C6A43F;
+            margin-top: 4px;
+        }
+
+        .photos-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .photo-preview-item {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid #C6A43F;
+        }
+
+        .photo-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-photo {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #6B2D3E;
+            color: white;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        #photoInput {
+            display: none;
+        }
+
         .add-btn {
             background: #6B2D3E;
             color: white;
@@ -119,7 +191,7 @@
             border-radius: 40px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 16px;
+            margin-top: 20px;
             font-size: 15px;
         }
 
@@ -148,20 +220,13 @@
             top: 0;
         }
 
-        .user-photo {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .photos-gallery {
+        .member-photos {
             display: flex;
             gap: 5px;
             flex-wrap: wrap;
         }
 
-        .photos-gallery img {
+        .member-photos img {
             width: 40px;
             height: 40px;
             border-radius: 8px;
@@ -185,16 +250,6 @@
         .delete-btn {
             background: #6B2D3E;
             color: white;
-        }
-
-        .badge {
-            display: inline-block;
-            background: #C6A43F20;
-            color: #C6A43F;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
         }
 
         @media (max-width: 700px) {
@@ -248,13 +303,25 @@
                     <option value="Men">Interested in Men</option>
                     <option value="Everyone">Everyone</option>
                 </select>
-                <input type="text" id="memberPhoto" placeholder="Photo URL (direct image link)">
-                <input type="text" id="memberWhatsapp" placeholder="WhatsApp number *">
             </div>
-            <div class="form-grid" style="margin-top: 12px;">
+            
+            <!-- Photo Upload Area (Max 6 photos) -->
+            <div class="form-group" style="margin-top: 16px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600;">📸 Upload Photos (Max 6)</label>
+                <div class="photo-upload-area" onclick="document.getElementById('photoInput').click()">
+                    <div class="photo-upload-icon">🖼️</div>
+                    <div class="photo-upload-text">Tap to upload photos</div>
+                    <div class="photo-upload-subtext">You can upload up to 6 photos</div>
+                </div>
+                <input type="file" id="photoInput" accept="image/*" multiple style="display:none">
+                <div class="photos-preview" id="photosPreview"></div>
+            </div>
+            
+            <div class="form-grid" style="margin-top: 16px;">
                 <textarea id="memberBio" rows="2" placeholder="Bio / About them (short description)"></textarea>
                 <textarea id="memberLookingFor" rows="2" placeholder="What they are looking for"></textarea>
             </div>
+            
             <button class="add-btn" onclick="addMember()">➕ Add Member to Gallery</button>
         </div>
 
@@ -294,6 +361,60 @@
 
     let members = [];
     let registrations = [];
+    let selectedPhotos = [];
+
+    // Handle photo selection (max 6)
+    document.getElementById('photoInput').addEventListener('change', function(e) {
+        const files = Array.from(e.target.files);
+        const remainingSlots = 6 - selectedPhotos.length;
+        const filesToAdd = files.slice(0, remainingSlots);
+        
+        filesToAdd.forEach(file => {
+            if (file.size > 2 * 1024 * 1024) {
+                alert('Photo ' + file.name + ' is larger than 2MB. Please choose a smaller photo.');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                selectedPhotos.push({
+                    file: file,
+                    dataUrl: event.target.result
+                });
+                renderPhotoPreview();
+            };
+            reader.readAsDataURL(file);
+        });
+        
+        if (files.length > remainingSlots) {
+            alert(`You can only upload up to 6 photos. Only ${remainingSlots} more photo(s) added.`);
+        }
+        
+        e.target.value = '';
+    });
+
+    function renderPhotoPreview() {
+        const container = document.getElementById('photosPreview');
+        if (selectedPhotos.length === 0) {
+            container.innerHTML = '';
+            return;
+        }
+        
+        let html = '';
+        selectedPhotos.forEach((photo, index) => {
+            html += `
+                <div class="photo-preview-item">
+                    <img src="${photo.dataUrl}" alt="Photo ${index + 1}">
+                    <div class="remove-photo" onclick="removePhoto(${index})">✕</div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    function removePhoto(index) {
+        selectedPhotos.splice(index, 1);
+        renderPhotoPreview();
+    }
 
     function loadData() {
         // Load members (gallery)
@@ -311,10 +432,10 @@
                     nationality: "Kenyan",
                     gender: "Male",
                     interestedIn: "Women",
-                    bio: "Architect who loves hiking and deep conversations. I believe in kindness and honesty above all.",
-                    lookingFor: "A woman with a kind heart who values family and loves adventure.",
-                    photo: "https://randomuser.me/api/portraits/men/32.jpg",
-                    whatsapp: "+254712345678"
+                    bio: "Architect who loves hiking and deep conversations.",
+                    lookingFor: "A woman with a kind heart who values family.",
+                    photos: ["https://randomuser.me/api/portraits/men/32.jpg"],
+                    timestamp: new Date().toISOString()
                 },
                 {
                     id: 2,
@@ -325,10 +446,10 @@
                     nationality: "Ugandan",
                     gender: "Female",
                     interestedIn: "Men",
-                    bio: "Doctor who loves traveling and trying new foods. I'm caring and adventurous.",
+                    bio: "Doctor who loves traveling and trying new foods.",
                     lookingFor: "A serious, God-fearing man who wants a family.",
-                    photo: "https://randomuser.me/api/portraits/women/68.jpg",
-                    whatsapp: "+256712345678"
+                    photos: ["https://randomuser.me/api/portraits/women/68.jpg"],
+                    timestamp: new Date().toISOString()
                 }
             ];
             saveMembers();
@@ -367,7 +488,7 @@
         registrations.forEach(r => {
             let photosHtml = '';
             if (r.photos && r.photos.length > 0) {
-                photosHtml = '<div class="photos-gallery">';
+                photosHtml = '<div class="member-photos">';
                 r.photos.slice(0, 3).forEach(p => {
                     photosHtml += `<img src="${p}" onerror="this.src='https://via.placeholder.com/40'">`;
                 });
@@ -404,14 +525,26 @@
         let html = `<table>
             <thead>
                 <tr>
-                    <th>Photo</th><th>Name</th><th>Age</th><th>City</th><th>Country</th><th>Nationality</th><th>Gender</th><th>Interested In</th><th>Bio</th><th>Looking For</th><th>WhatsApp</th><th>Actions</th>
+                    <th>Photos</th><th>Name</th><th>Age</th><th>City</th><th>Country</th><th>Nationality</th><th>Gender</th><th>Interested In</th><th>Bio</th><th>Looking For</th><th>Actions</th>
                 </tr>
             </thead>
             <tbody>`;
         members.forEach(m => {
+            let photosHtml = '';
+            if (m.photos && m.photos.length > 0) {
+                photosHtml = '<div class="member-photos">';
+                m.photos.slice(0, 3).forEach(p => {
+                    photosHtml += `<img src="${p}" onerror="this.src='https://via.placeholder.com/40'">`;
+                });
+                if (m.photos.length > 3) photosHtml += `<span class="badge">+${m.photos.length - 3}</span>`;
+                photosHtml += '</div>';
+            } else {
+                photosHtml = '📷 No photo';
+            }
+            
             html += `
                 <tr>
-                    <td><img class="user-photo" src="${m.photo}" onerror="this.src='https://via.placeholder.com/45'"></td>
+                    <td>${photosHtml}</td>
                     <td>${m.name}</td>
                     <td>${m.age}</td>
                     <td>${m.city || '-'}</td>
@@ -421,7 +554,6 @@
                     <td>${m.interestedIn}</td>
                     <td>${(m.bio || '').substring(0, 40)}${(m.bio || '').length > 40 ? '...' : ''}</td>
                     <td>${(m.lookingFor || '').substring(0, 40)}${(m.lookingFor || '').length > 40 ? '...' : ''}</td>
-                    <td>${m.whatsapp}</td>
                     <td>
                         <button class="edit-btn" onclick="editMember(${m.id})">✏️ Edit</button>
                         <button class="delete-btn" onclick="deleteMember(${m.id})">🗑️ Del</button>
@@ -445,12 +577,17 @@
             interestedIn: document.getElementById('memberInterestedIn').value,
             bio: document.getElementById('memberBio').value,
             lookingFor: document.getElementById('memberLookingFor').value,
-            photo: document.getElementById('memberPhoto').value,
-            whatsapp: document.getElementById('memberWhatsapp').value
+            photos: selectedPhotos.map(p => p.dataUrl),
+            timestamp: new Date().toISOString()
         };
         
-        if (!newMember.name || !newMember.age || !newMember.country || !newMember.whatsapp) {
-            alert("Please fill required fields: Name, Age, Country, WhatsApp");
+        if (!newMember.name || !newMember.age || !newMember.country) {
+            alert("Please fill required fields: Name, Age, Country");
+            return;
+        }
+        
+        if (newMember.photos.length === 0) {
+            alert("Please upload at least 1 photo (max 6)");
             return;
         }
         
@@ -466,10 +603,10 @@
         document.getElementById('memberNationality').value = '';
         document.getElementById('memberBio').value = '';
         document.getElementById('memberLookingFor').value = '';
-        document.getElementById('memberPhoto').value = '';
-        document.getElementById('memberWhatsapp').value = '';
+        selectedPhotos = [];
+        renderPhotoPreview();
         
-        alert('✅ Member added successfully!');
+        alert('✅ Member added successfully with ' + newMember.photos.length + ' photo(s)!');
     }
 
     function deleteMember(id) {
@@ -504,12 +641,6 @@
         
         const newLookingFor = prompt("Edit 'looking for'", member.lookingFor || '');
         if (newLookingFor !== null) member.lookingFor = newLookingFor;
-        
-        const newPhoto = prompt("Edit photo URL", member.photo);
-        if (newPhoto !== null) member.photo = newPhoto;
-        
-        const newWhatsapp = prompt("Edit WhatsApp number", member.whatsapp);
-        if (newWhatsapp) member.whatsapp = newWhatsapp;
         
         saveMembers();
         renderMembersTable();
