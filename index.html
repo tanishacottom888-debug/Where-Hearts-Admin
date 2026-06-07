@@ -307,14 +307,6 @@
             color: #C6A43F;
         }
 
-        .loading {
-            display: none;
-            text-align: center;
-            margin-top: 10px;
-            font-size: 12px;
-            color: #6B2D3E;
-        }
-
         @media (max-width: 480px) {
             .hero {
                 height: 90vh;
@@ -548,25 +540,27 @@
             return;
         }
 
-        // Build message for WhatsApp
-        let message = `🌟 *NEW MATCHMAKING REGISTRATION* 🌟\n\n`;
+        // Build message for WhatsApp with "💕 NEW MATCH REQUEST" title
+        let message = `💕 *NEW MATCH REQUEST* 💕\n\n`;
         message += `👤 *Name:* ${fullName}\n`;
         message += `⚥ *Gender:* ${gender}\n`;
-        message += `❤️ *Interested in:* ${interestedIn}\n`;
+        message += `❤️ *Seeking:* ${interestedIn}\n`;
         message += `📅 *Age:* ${age}\n`;
         message += `🌍 *Nationality:* ${nationality}\n`;
-        message += `📍 *Current Country:* ${currentCountry}\n`;
+        message += `📍 *Location:* ${currentCountry}\n`;
         message += `💭 *Looking for:* ${lookingFor || "Not specified"}\n`;
-        message += `📱 *Their WhatsApp:* ${userWhatsapp}\n\n`;
+        message += `📱 *WhatsApp:* ${userWhatsapp}\n\n`;
         
         if (selectedPhotos.length > 0) {
-            message += `🖼️ *Photos uploaded:* ${selectedPhotos.length} photo(s)\n`;
-            message += `📸 Photos are attached in this message (please scroll up/down to view)\n\n`;
+            message += `📸 *${selectedPhotos.length} photo(s) submitted*\n`;
+            message += `💡 Please ask client to send photos in this chat\n\n`;
         } else {
             message += `📷 *No photos uploaded*\n\n`;
         }
         
-        message += `_Please assist this person in finding their match. 🙏_`;
+        message += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+        message += `✨ *Please reach out to this person* ✨\n`;
+        message += `━━━━━━━━━━━━━━━━━━━━━━━━━━`;
 
         const encodedMessage = encodeURIComponent(message);
         const whatsappUrl = `https://wa.me/${ADMIN_WHATSAPP}?text=${encodedMessage}`;
@@ -574,12 +568,7 @@
         // Open WhatsApp
         window.open(whatsappUrl, '_blank');
         
-        alert(`💖 Thank you ${fullName}! You will now be redirected to WhatsApp to complete your registration with our matchmaking team.`);
-        
-        // Optional: Reset form
-        // document.getElementById('userForm').reset();
-        // selectedPhotos = [];
-        // renderPhotoPreview();
+        alert(`💖 Thank you ${fullName}! You will now be redirected to WhatsApp to complete your match request.`);
     });
 </script>
 </body>
