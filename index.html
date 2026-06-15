@@ -3,576 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Where Hearts Meet | Find Love</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: #0F1A24;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        /* ============ UPDATED HERO SECTION - REDUCED HEIGHT ============ */
-        .hero {
-            position: relative;
-            height: 60vh;
-            min-height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            overflow: hidden;
-        }
-
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(0.55);
-        }
-
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, rgba(15, 26, 36, 0.6) 0%, rgba(15, 26, 36, 0.85) 100%);
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            padding: 0 24px;
-            width: 100%;
-        }
-
-        .hero-icon {
-            font-size: 56px;
-            margin-bottom: 12px;
-            animation: float 3s ease-in-out infinite;
-            display: inline-block;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-
-        h1 {
-            font-size: 38px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #FFFFFF 0%, #C6A43F 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            margin-bottom: 10px;
-        }
-
-        .sweet-line {
-            font-size: 16px;
-            color: #F9F6F0;
-            font-style: italic;
-            font-weight: 400;
-            margin-bottom: 8px;
-            line-height: 1.4;
-        }
-
-        .hero-badge {
-            display: inline-block;
-            background: rgba(198, 164, 63, 0.2);
-            backdrop-filter: blur(8px);
-            padding: 6px 16px;
-            border-radius: 40px;
-            font-size: 11px;
-            letter-spacing: 1.5px;
-            color: #C6A43F;
-            font-weight: 600;
-            margin-top: 12px;
-            border: 0.5px solid rgba(198, 164, 63, 0.4);
-        }
-
-        .scroll-hint {
-            position: absolute;
-            bottom: 16px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            z-index: 2;
-            animation: bounce 2s infinite;
-            cursor: pointer;
-        }
-
-        .scroll-hint span {
-            color: #C6A43F;
-            font-size: 24px;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(6px); }
-        }
-
-        .form-section {
-            background: #0F1A24;
-            padding: 40px 20px 60px;
-        }
-
-        .form-container {
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .form-card {
-            background: #F9F6F0;
-            border-radius: 40px;
-            padding: 32px 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .form-title {
-            text-align: center;
-            margin-bottom: 28px;
-        }
-
-        .form-title h2 {
-            font-size: 26px;
-            font-weight: 700;
-            color: #0F1A24;
-        }
-
-        .form-title p {
-            font-size: 13px;
-            color: #6B5E5E;
-            margin-top: 8px;
-        }
-
-        .form-group {
-            margin-bottom: 18px;
-        }
-
-        label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: #0F1A24;
-            margin-bottom: 8px;
-        }
-
-        .hint {
-            font-size: 10px;
-            color: #8A7A7A;
-            margin-top: 6px;
-            display: block;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 14px 16px;
-            font-size: 15px;
-            background: #FFFFFF;
-            border: 1.5px solid #E8E0D5;
-            border-radius: 50px;
-            color: #2C2C2C;
-            transition: all 0.2s;
-            font-family: inherit;
-        }
-
-        textarea {
-            border-radius: 24px;
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: #C6A43F;
-            box-shadow: 0 0 0 3px rgba(198, 164, 63, 0.15);
-        }
-
-        .photo-upload-area {
-            border: 2px dashed #C6A43F;
-            background: #FFF8F0;
-            border-radius: 24px;
-            padding: 16px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .photo-upload-area:hover {
-            background: #FFF0E8;
-            border-color: #6B2D3E;
-        }
-
-        .photo-upload-icon {
-            font-size: 32px;
-            margin-bottom: 8px;
-        }
-
-        .photo-upload-text {
-            font-size: 13px;
-            color: #6B5E5E;
-        }
-
-        .photo-upload-subtext {
-            font-size: 10px;
-            color: #C6A43F;
-            margin-top: 4px;
-        }
-
-        .photos-preview {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 16px;
-        }
-
-        .photo-preview-item {
-            position: relative;
-            width: 80px;
-            height: 80px;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 2px solid #C6A43F;
-        }
-
-        .photo-preview-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .remove-photo {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #6B2D3E;
-            color: white;
-            border-radius: 50%;
-            width: 22px;
-            height: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        #photoInput {
-            display: none;
-        }
-
-        .double-row {
-            display: flex;
-            gap: 12px;
-        }
-
-        .double-row .form-group {
-            flex: 1;
-        }
-
-        .continue-btn {
-            width: 100%;
-            background: #25D366;
-            color: white;
-            border: none;
-            padding: 16px 20px;
-            font-size: 17px;
-            font-weight: 700;
-            border-radius: 50px;
-            margin-top: 24px;
-            cursor: pointer;
-            transition: all 0.2s;
-            letter-spacing: 0.5px;
-        }
-
-        .continue-btn:active {
-            transform: scale(0.97);
-            background: #128C7E;
-        }
-
-        .footer-note {
-            text-align: center;
-            margin-top: 24px;
-            font-size: 11px;
-            color: #C6A43F;
-        }
-
-        /* Mobile adjustments */
-        @media (max-width: 480px) {
-            .hero {
-                height: 50vh;
-                min-height: 350px;
-            }
-            h1 {
-                font-size: 32px;
-            }
-            .sweet-line {
-                font-size: 14px;
-            }
-            .hero-icon {
-                font-size: 48px;
-            }
-            .form-card {
-                padding: 28px 20px;
-            }
-            .form-title h2 {
-                font-size: 24px;
-            }
-            .double-row {
-                flex-direction: column;
-                gap: 0;
-            }
-            input, select, textarea {
-                padding: 12px 14px;
-                font-size: 14px;
-            }
-            .continue-btn {
-                padding: 14px 20px;
-                font-size: 16px;
-            }
-            .photo-preview-item {
-                width: 65px;
-                height: 65px;
-            }
-        }
-
-        @media (max-width: 380px) {
-            .hero {
-                height: 45vh;
-                min-height: 300px;
-            }
-            .form-card {
-                padding: 24px 18px;
-            }
-            h1 {
-                font-size: 28px;
-            }
-            .sweet-line {
-                font-size: 13px;
-            }
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-    </style>
+    <title>Where Hearts Meet | Elite Matchmaking</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="hero">
-    <img class="hero-bg" src="https://images.unsplash.com/photo-1501901609772-df0848060b33?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Romantic sunset couple">
     <div class="hero-overlay"></div>
     <div class="hero-content">
         <div class="hero-icon">💕</div>
         <h1>Where Hearts Meet</h1>
-        <div class="sweet-line">
-            "Every love story begins with a single hello"
-        </div>
-        <div class="hero-badge">ELITE MATCHMAKING</div>
-    </div>
-    <div class="scroll-hint" onclick="document.getElementById('form-section').scrollIntoView({behavior: 'smooth'})">
-        <span>👇</span>
+        <p class="hero-tagline">Elite Matchmaking Agency</p>
+        <p class="hero-quote">"Every love story begins with a single hello"</p>
+        
+        <!-- NEW: Get Verified Badge -->
+        <div class="verified-badge">✅ Get Verified</div>
+        
+        <button class="scroll-btn" onclick="scrollToForm()">Begin Your Journey ↓</button>
     </div>
 </div>
 
 <div class="form-section" id="form-section">
     <div class="form-container">
         <div class="form-card">
-            <div class="form-title">
-                <h2>Begin Your Journey</h2>
-                <p>Confidential · Personal · Heart-led</p>
-            </div>
+            <h2>Begin Your Journey</h2>
+            <p class="form-subtitle">Confidential · Personal · Heart-led</p>
 
-            <form id="userForm">
+            <form id="matchForm">
                 <div class="form-group">
                     <label>Full name</label>
                     <input type="text" id="fullName" placeholder="Your real name" required>
                 </div>
 
-                <div class="form-group">
-                    <label>Gender</label>
-                    <select id="gender" required>
-                        <option value="">Select</option>
-                        <option value="Female">Female</option>
-                        <option value="Male">Male</option>
-                        <option value="Non-binary">Non-binary</option>
-                    </select>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select id="gender" required>
+                            <option value="">Select</option>
+                            <option value="Female">Female</option>
+                            <option value="Male">Male</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Interested in</label>
+                        <select id="interestedIn" required>
+                            <option value="">Select</option>
+                            <option value="Men">Men</option>
+                            <option value="Women">Women</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label>I am interested in</label>
-                    <select id="interestedIn" required>
-                        <option value="">Select</option>
-                        <option value="Men">Men</option>
-                        <option value="Women">Women</option>
-                        <option value="Everyone">Everyone</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Age</label>
-                    <input type="number" id="age" placeholder="Your age" required>
-                </div>
-
-                <div class="double-row">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Age</label>
+                        <input type="number" id="age" placeholder="Your age" required>
+                    </div>
                     <div class="form-group">
                         <label>Nationality</label>
                         <input type="text" id="nationality" placeholder="e.g., Kenyan" required>
                     </div>
-                    <div class="form-group">
-                        <label>Current country</label>
-                        <input type="text" id="currentCountry" placeholder="e.g., Kenya" required>
-                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Current country</label>
+                    <input type="text" id="country" placeholder="e.g., Kenya" required>
                 </div>
 
                 <div class="form-group">
                     <label>What are you looking for?</label>
-                    <textarea id="lookingFor" placeholder="A genuine connection, shared values, and a heart that matches mine..."></textarea>
+                    <textarea id="lookingFor" rows="3" placeholder="Describe your ideal partner and what matters to you..."></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label>Upload your photos (max 2)</label>
-                    <div class="photo-upload-area" onclick="document.getElementById('photoInput').click()">
-                        <div class="photo-upload-icon">📸</div>
-                        <div class="photo-upload-text">Tap to upload photos</div>
-                        <div class="photo-upload-subtext">You can upload up to 2 photos</div>
+                    <label>Upload photos (max 2)</label>
+                    <div class="upload-area" onclick="document.getElementById('photoInput').click()">
+                        <div class="upload-icon">📸</div>
+                        <div class="upload-text">Tap to upload photos</div>
+                        <div class="upload-hint">Up to 2 photos, max 2MB each</div>
                     </div>
                     <input type="file" id="photoInput" accept="image/*" multiple style="display:none">
-                    <div class="photos-preview" id="photosPreview"></div>
-                    <span class="hint">📸 Upload clear photos of yourself (max 2 photos, each up to 2MB)</span>
+                    <div class="photo-preview" id="photoPreview"></div>
                 </div>
 
                 <div class="form-group">
                     <label>Your WhatsApp number</label>
-                    <input type="tel" id="userWhatsapp" placeholder="e.g., 254712345678" required>
-                    <span class="hint">📱 We'll use this to contact you</span>
+                    <input type="tel" id="whatsapp" placeholder="e.g., 254712345678" required>
+                    <span class="hint">Include country code (e.g., 254 for Kenya)</span>
                 </div>
 
-                <button type="submit" class="continue-btn">💬 SUBMIT & CONTINUE ON WHATSAPP →</button>
+                <button type="submit" class="submit-btn">💬 Submit Match Request</button>
             </form>
 
-            <div class="footer-note">
-                🔒 Your information will be sent to our matchmaking team via WhatsApp
-            </div>
+            <p class="footer-note">🔒 Your information is private and will only be shared with our matchmaking team</p>
         </div>
     </div>
 </div>
 
-<script>
-    // ============ YOUR WHATSAPP NUMBER (ADMIN) ============
-    const ADMIN_WHATSAPP = "254719701318";
-    
-    let selectedPhotos = [];
-
-    // Handle photo selection (max 2)
-    document.getElementById('photoInput').addEventListener('change', function(e) {
-        const files = Array.from(e.target.files);
-        const remainingSlots = 2 - selectedPhotos.length;
-        const filesToAdd = files.slice(0, remainingSlots);
-        
-        filesToAdd.forEach(file => {
-            if (file.size > 2 * 1024 * 1024) {
-                alert('Photo ' + file.name + ' is larger than 2MB. Please choose a smaller photo.');
-                return;
-            }
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                selectedPhotos.push({
-                    file: file,
-                    dataUrl: event.target.result
-                });
-                renderPhotoPreview();
-            };
-            reader.readAsDataURL(file);
-        });
-        
-        if (files.length > remainingSlots) {
-            alert(`You can only upload up to 2 photos. Only ${remainingSlots} more photo(s) added.`);
-        }
-        
-        e.target.value = '';
-    });
-
-    function renderPhotoPreview() {
-        const container = document.getElementById('photosPreview');
-        if (selectedPhotos.length === 0) {
-            container.innerHTML = '';
-            return;
-        }
-        
-        let html = '';
-        selectedPhotos.forEach((photo, index) => {
-            html += `
-                <div class="photo-preview-item">
-                    <img src="${photo.dataUrl}" alt="Photo ${index + 1}">
-                    <div class="remove-photo" onclick="removePhoto(${index})">✕</div>
-                </div>
-            `;
-        });
-        container.innerHTML = html;
-    }
-
-    function removePhoto(index) {
-        selectedPhotos.splice(index, 1);
-        renderPhotoPreview();
-    }
-
-    document.getElementById('userForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        const fullName = document.getElementById('fullName').value;
-        const gender = document.getElementById('gender').value;
-        const interestedIn = document.getElementById('interestedIn').value;
-        const age = document.getElementById('age').value;
-        const nationality = document.getElementById('nationality').value;
-        const currentCountry = document.getElementById('currentCountry').value;
-        const lookingFor = document.getElementById('lookingFor').value;
-        const userWhatsapp = document.getElementById('userWhatsapp').value;
-
-        if (!fullName || !gender || !interestedIn || !age || !nationality || !currentCountry || !userWhatsapp) {
-            alert('Please fill all required fields.');
-            return;
-        }
-
-        // Build message for WhatsApp
-        let message = `💕 *NEW MATCH REQUEST* 💕\n\n`;
-        message += `👤 *Name:* ${fullName}\n`;
-        message += `⚥ *Gender:* ${gender}\n`;
-        message += `❤️ *Seeking:* ${interestedIn}\n`;
-        message += `📅 *Age:* ${age}\n`;
-        message += `🌍 *Nationality:* ${nationality}\n`;
-        message += `📍 *Location:* ${currentCountry}\n`;
-        message += `💭 *Looking for:* ${lookingFor || "Not specified"}\n`;
-        message += `📱 *WhatsApp:* ${userWhatsapp}\n\n`;
-        
-        if (selectedPhotos.length > 0) {
-            message += `📸 *${selectedPhotos.length} photo(s) submitted*\n`;
-            message += `💡 Please ask client to send photos in this chat\n\n`;
-        } else {
-            message += `📷 *No photos uploaded*\n\n`;
-        }
-        
-        message += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-        message += `✨ *Please reach out to this person* ✨\n`;
-        message += `━━━━━━━━━━━━━━━━━━━━━━━━━━`;
-
-        const encodedMessage = encodeURIComponent(message);
-        const whatsappUrl = `https://wa.me/${ADMIN_WHATSAPP}?text=${encodedMessage}`;
-        
-        window.open(whatsappUrl, '_blank');
-        alert(`💖 Thank you ${fullName}! You will now be redirected to WhatsApp to complete your match request.`);
-    });
-</script>
+<script src="script.js"></script>
 </body>
 </html>
