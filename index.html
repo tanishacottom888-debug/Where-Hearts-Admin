@@ -17,16 +17,26 @@
             color: #2D2D2D;
         }
 
-        /* Hero Section */
+        /* Hero Section with Image */
         .hero {
             position: relative;
-            height: 75vh;
+            height: 80vh;
             min-height: 550px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            background: linear-gradient(135deg, #1A2A3A 0%, #0F1A24 100%);
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.45);
         }
 
         .hero-overlay {
@@ -35,7 +45,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 30% 50%, rgba(198, 164, 63, 0.08) 0%, transparent 70%);
+            background: linear-gradient(135deg, rgba(15, 26, 36, 0.7) 0%, rgba(15, 26, 36, 0.85) 100%);
         }
 
         .hero-content {
@@ -57,7 +67,7 @@
         }
 
         h1 {
-            font-size: 48px;
+            font-size: 52px;
             font-weight: 800;
             background: linear-gradient(135deg, #FFFFFF 0%, #C6A43F 100%);
             background-clip: text;
@@ -69,7 +79,7 @@
 
         .hero-tagline {
             font-size: 14px;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             color: #C6A43F;
             margin-bottom: 16px;
             font-weight: 600;
@@ -77,9 +87,10 @@
 
         .hero-quote {
             font-size: 18px;
-            color: #E8DCD0;
+            color: #F9F6F0;
             font-style: italic;
             margin-bottom: 24px;
+            font-weight: 400;
         }
 
         /* Get Verified Badge */
@@ -93,14 +104,14 @@
             font-weight: 700;
             margin-bottom: 28px;
             letter-spacing: 0.5px;
-            box-shadow: 0 4px 15px rgba(198, 164, 63, 0.3);
+            box-shadow: 0 4px 15px rgba(198, 164, 63, 0.4);
         }
 
         .scroll-btn {
             background: transparent;
             border: 1.5px solid #C6A43F;
             color: #C6A43F;
-            padding: 10px 28px;
+            padding: 12px 32px;
             border-radius: 40px;
             font-size: 14px;
             font-weight: 600;
@@ -109,14 +120,14 @@
         }
 
         .scroll-btn:hover {
-            background: rgba(198, 164, 63, 0.1);
+            background: rgba(198, 164, 63, 0.15);
             transform: translateY(-2px);
         }
 
         /* Form Section */
         .form-section {
             background: #0F1A24;
-            padding: 50px 20px 70px;
+            padding: 60px 20px 70px;
         }
 
         .form-container {
@@ -295,7 +306,7 @@
         /* Mobile */
         @media (max-width: 550px) {
             .hero {
-                height: 65vh;
+                height: 70vh;
                 min-height: 500px;
             }
             h1 {
@@ -329,7 +340,7 @@
 
         @media (max-width: 380px) {
             .hero {
-                height: 55vh;
+                height: 60vh;
                 min-height: 450px;
             }
             h1 {
@@ -341,21 +352,23 @@
 <body>
 
 <div class="hero">
+    <!-- Beautiful romantic hero image -->
+    <img class="hero-bg" src="https://images.pexels.com/photos/2253870/pexels-photo-2253870.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Romantic couple sunset">
     <div class="hero-overlay"></div>
     <div class="hero-content">
         <div class="hero-icon">💕</div>
         <h1>Where Hearts Meet</h1>
-        <p class="hero-tagline">Elite Matchmaking Agency</p>
+        <p class="hero-tagline">ELITE MATCHMAKING AGENCY</p>
         <p class="hero-quote">"Every love story begins with a single hello"</p>
         <div class="verified-badge">✅ Get Verified</div>
-        <button class="scroll-btn" onclick="scrollToForm()">Begin Your Journey ↓</button>
+        <button class="scroll-btn" onclick="scrollToForm()">Create Your Profile ↓</button>
     </div>
 </div>
 
 <div class="form-section" id="form-section">
     <div class="form-container">
         <div class="form-card">
-            <h2>Begin Your Journey</h2>
+            <h2>Create Your Profile</h2>
             <p class="form-subtitle">Confidential · Personal · Heart-led</p>
 
             <form id="matchForm">
