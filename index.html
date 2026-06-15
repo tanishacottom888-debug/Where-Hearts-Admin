@@ -368,12 +368,11 @@
 <body>
 
 <div class="hero">
-    <!-- 5 Rotating Hero Images - YOUR IMAGES + 1 BONUS -->
+    <!-- 5 Rotating Hero Images -->
     <img class="hero-slide active" src="https://images.unsplash.com/photo-1494774157365-9e04c6720e47?q=80&w=1200&auto=format" alt="Romantic couple 1">
     <img class="hero-slide" src="https://images.unsplash.com/photo-1501901609772-df0848060b33?w=1200&auto=format" alt="Romantic couple 2">
     <img class="hero-slide" src="https://plus.unsplash.com/premium_photo-1683121105193-837e90f41085?w=1200&auto=format" alt="Romantic couple 3">
     <img class="hero-slide" src="https://images.unsplash.com/photo-1516980907201-943c13a8d03c?w=1200&auto=format" alt="Romantic couple 4">
-    <!-- Bonus 5th image - beautiful romantic sunset -->
     <img class="hero-slide" src="https://images.unsplash.com/photo-1516589091380-5d8e87f69921?w=1200&auto=format" alt="Romantic couple sunset">
     <div class="hero-overlay"></div>
     <div class="hero-content">
@@ -526,7 +525,7 @@
         renderPhotoPreview();
     }
 
-    // Form submit
+    // Form submit - CLEAN WHATSAPP FORMAT WITH BOLD TITLES
     document.getElementById('matchForm').addEventListener('submit', function(e) {
         e.preventDefault();
         
@@ -544,26 +543,16 @@
             return;
         }
         
-        let message = `💕 *NEW MATCH REQUEST* 💕\n\n`;
-        message += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-        message += `📋 *PERSONAL DETAILS*\n`;
-        message += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
-        message += `👤 *Name:* ${fullName}\n`;
-        message += `⚥ *Gender:* ${gender}\n`;
-        message += `❤️ *Seeking:* ${interestedIn}\n`;
-        message += `📅 *Age:* ${age}\n`;
-        message += `🌍 *Nationality:* ${nationality}\n`;
-        message += `📍 *Location:* ${country}\n\n`;
-        
-        message += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-        message += `💭 *WHAT THEY'RE LOOKING FOR*\n`;
-        message += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
-        message += `${lookingFor || "Not specified"}\n\n`;
-        
-        message += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-        message += `📞 *CONTACT*\n`;
-        message += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
-        message += `📱 *WhatsApp:* ${whatsapp}`;
+        // CLEAN WHATSAPP FORMAT WITH BOLD TITLES
+        let message = `*NEW MATCH REQUEST*\n\n`;
+        message += `*Name:* ${fullName}\n`;
+        message += `*Gender:* ${gender}\n`;
+        message += `*Seeking:* ${interestedIn}\n`;
+        message += `*Age:* ${age}\n`;
+        message += `*Nationality:* ${nationality}\n`;
+        message += `*Location:* ${country}\n\n`;
+        message += `*Looking for:* ${lookingFor || "Not specified"}\n\n`;
+        message += `*Contact WhatsApp:* ${whatsapp}`;
         
         const encodedMessage = encodeURIComponent(message);
         const whatsappUrl = `https://wa.me/${ADMIN_WHATSAPP}?text=${encodedMessage}`;
