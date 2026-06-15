@@ -525,7 +525,7 @@
         renderPhotoPreview();
     }
 
-    // Form submit - CLEAN WHATSAPP FORMAT WITH BOLD TITLES
+    // Form submit - WITH POPUP (alert) THEN WHATSAPP
     document.getElementById('matchForm').addEventListener('submit', function(e) {
         e.preventDefault();
         
@@ -543,7 +543,7 @@
             return;
         }
         
-        // CLEAN WHATSAPP FORMAT WITH BOLD TITLES
+        // Clean WhatsApp format with bold titles
         let message = `*NEW MATCH REQUEST*\n\n`;
         message += `*Name:* ${fullName}\n`;
         message += `*Gender:* ${gender}\n`;
@@ -557,9 +557,13 @@
         const encodedMessage = encodeURIComponent(message);
         const whatsappUrl = `https://wa.me/${ADMIN_WHATSAPP}?text=${encodedMessage}`;
         
-        window.open(whatsappUrl, '_blank');
+        // ✅ POPUP ALERT - Thank you message before opening WhatsApp
         alert(`💖 Thank you ${fullName}! Your match request has been sent.`);
         
+        // Then open WhatsApp
+        window.open(whatsappUrl, '_blank');
+        
+        // Reset form
         document.getElementById('matchForm').reset();
         selectedPhotos = [];
         renderPhotoPreview();
